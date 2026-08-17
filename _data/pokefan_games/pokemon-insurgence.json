@@ -1,0 +1,44 @@
+{
+  "manifestVersion": 3,
+  "id": "pokemon-insurgence",
+  "name": "Pokémon Insurgence",
+  "version": "1.2.7",
+  "engine": "RPG Maker XP / Pokémon Essentials",
+  "developer": "TheSuzerain / Insurgence Team",
+  "description": "Aventure complète connue pour ses Delta Species, son scénario plus sombre et ses nombreuses options de difficulté.",
+  "languages": ["English"],
+  "tags": ["Fangame", "Essentials", "Delta Species", "Complete"],
+  "category": "Fangame",
+  "status": "released",
+  "sourcePage": "https://p-insurgence.com/",
+  "artwork": "https://p-insurgence.com/assets/img/logo2.png",
+  "install": [
+    {
+      "id": "windows-direct",
+      "label": "Full Download officiel · Windows",
+      "platform": { "os": "windows" },
+      "kind": "direct-zip",
+      "runner": "native",
+      "url": "https://p-insurgence.com/releases/1.2.7/Pokemon%20Insurgence%201.2.7%20Core.zip",
+      "executable": "Game.exe",
+      "sourcePage": "https://p-insurgence.com/"
+    },
+    {
+      "id": "windows-existing",
+      "label": "Installation existante · Windows",
+      "platform": { "os": "windows" },
+      "kind": "manual",
+      "runner": "native",
+      "executable": "Game.exe"
+    },
+    {
+      "id": "linux-proton",
+      "label": "Installation Windows · Proton",
+      "platform": { "os": "linux" },
+      "kind": "manual",
+      "runner": "proton",
+      "executable": "Game.exe"
+    }
+  ],
+  "update": { "kind": "none" }
+}

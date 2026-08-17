@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="dark">
+<title>Éditeur Pokefan Index</title>
+<style>
+:root{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#eef7f8;background:#081019}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 15% 0,#123039 0,transparent 32rem),#081019}main{width:min(1180px,calc(100% - 28px));margin:auto;padding:42px 0 70px}.top{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;margin-bottom:26px}.eyebrow{color:#73dfd3;font-weight:900;letter-spacing:.15em;font-size:11px}h1{margin:5px 0 10px;font-size:clamp(34px,6vw,58px);letter-spacing:-.04em}.muted,p{color:#9fb1bd;line-height:1.55}.back,a.btn,button{border:1px solid #29404f;border-radius:10px;background:#15232e;color:#d9e8ec;padding:10px 13px;text-decoration:none;font:inherit;font-weight:800;cursor:pointer}.primary{background:#72ddd2!important;color:#061116!important;border-color:#72ddd2!important}.layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(330px,.8fr);gap:18px}.panel{border:1px solid #223846;background:#0e1822;border-radius:18px;padding:18px}.panel h2{margin:0 0 14px;font-size:18px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.wide{grid-column:1/-1}label{display:grid;gap:6px;color:#a9bec7;font-size:12px;font-weight:700}input,select,textarea{width:100%;border:1px solid #2b4050;background:#09131c;color:#eef7f8;border-radius:10px;padding:10px 11px;font:inherit}textarea{min-height:88px;resize:vertical}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.hint{border-left:3px solid #6fded2;background:#101d27;padding:10px 12px;color:#9fb2bc;font-size:12px;line-height:1.55;margin-top:12px}pre{white-space:pre-wrap;word-break:break-word;background:#071018;border:1px solid #203746;border-radius:12px;padding:14px;max-height:520px;overflow:auto;color:#cfe7e6;font-size:12px}.status{font-size:12px;color:#70e1d4;margin-top:10px}.danger{color:#ffb3b3}.option-row{display:flex;gap:8px;align-items:end}.option-row label{flex:1}@media(max-width:850px){.layout{grid-template-columns:1fr}.top{display:block}.back{display:inline-block;margin-top:10px}.grid{grid-template-columns:1fr}.wide{grid-column:auto}}
+</style>
+</head>
+<body><main>
+<div class="top"><div><div class="eyebrow">POKEFAN INDEX · ADMINISTRATION SIMPLE</div><h1>Éditeur de manifeste</h1><p>Modifie une fiche sans toucher au code du launcher. L’index compilé reste <code>games.json</code>; les fiches placées dans <code>_data/pokefan_games/</code> remplacent automatiquement l’entrée de base lors du build GitHub Pages.</p></div><a class="back" href="./">← Retour à l’index</a></div>
+<div class="layout">
+<section class="panel"><h2>1. Choisir la fiche</h2>
+<div class="grid">
+<label class="wide">Jeu<select id="game"></select></label>
+<label>ID<input id="id"></label><label>Nom<input id="name"></label>
+<label>Version<input id="version" placeholder="1.2.7"></label><label>Catégorie<input id="category" placeholder="Fangame / ROM hack"></label>
+<label>Développeur<input id="developer"></label><label>Page officielle<input id="sourcePage" type="url"></label>
+<label class="wide">Description<textarea id="description"></textarea></label>
+</div>
+<h2 style="margin-top:22px">2. Méthode d’installation</h2>
+<div class="option-row"><label>Option<select id="installOption"></select></label><button id="addOption" type="button">+ Option</button></div>
+<div class="grid" style="margin-top:12px">
+<label>Libellé<input id="label"></label><label>Plateforme<select id="os"><option>windows</option><option>linux</option><option>macos</option><option>any</option></select></label>
+<label>Type<select id="kind"><option value="direct-zip">direct-zip</option><option value="github-release">github-release</option><option value="flatpak">flatpak</option><option value="external">external</option><option value="manual">manual</option></select></label>
+<label>Runner<select id="runner"><option>native</option><option>auto</option><option>wine</option><option>proton</option><option>java</option><option>command</option></select></label>
+<label class="wide direct">URL du ZIP<input id="url" type="url" placeholder="https://.../game.zip"></label>
+<label class="github">Dépôt GitHub<input id="repository" placeholder="owner/repo"></label><label class="github">Asset pattern<input id="assetPattern" placeholder="^game-windows\\.zip$"></label>
+<label>Exécutable après installation<input id="executable" placeholder="Game.exe"></label><label>SHA-256 optionnel<input id="sha256" placeholder="checksum"></label>
+<label class="wide sourceOpt">Page source de cette option<input id="optionSource" type="url"></label>
+</div>
+<div id="kindHint" class="hint"></div>
+<div class="actions"><button class="primary" id="generate">Générer la fiche</button><button id="copy">Copier JSON</button><button id="download">Télécharger .json</button></div><div class="status" id="status"></div>
+</section>
+<section class="panel"><h2>3. Publier</h2><p class="muted">Le fichier doit s’appeler exactement comme l’ID du jeu, par exemple <code>pokemon-insurgence.json</code>.</p><div class="actions"><a class="btn primary" id="editGithub" target="_blank" rel="noopener">Éditer sur GitHub</a><a class="btn" id="newGithub" target="_blank" rel="noopener">Créer la fiche sur GitHub</a></div><div class="hint">Procédure : <b>Générer</b> → <b>Copier JSON</b> → ouvrir GitHub → remplacer/coller le contenu → <b>Commit changes</b>. GitHub Pages reconstruit ensuite automatiquement <code>games.json</code>. Aucune nouvelle version du launcher n’est nécessaire.</div><h2 style="margin-top:22px">Aperçu JSON</h2><pre id="output">Chargement…</pre></section>
+</div></main>
+<script>
+const $=s=>document.querySelector(s);let games=[],draft=null,optionIndex=0;const fields=['id','name','version','category','developer','sourcePage','description','label','url','repository','assetPattern','executable','sha256','optionSource'];
+const hints={
+'direct-zip':'Pokefan télécharge directement le ZIP, le vérifie éventuellement, l’extrait, cherche l’exécutable puis enregistre le jeu.',
+'github-release':'Pokefan interroge la dernière GitHub Release du dépôt et choisit l’asset correspondant à la regex Asset pattern.',
+'flatpak':'Linux uniquement : Pokefan installe l’ID Flatpak. Le runner command reste réservé à ce provider approuvé.',
+'external':'Pokefan conserve la page officielle comme source externe. À utiliser lorsque le téléchargement ne peut pas être automatisé proprement.',
+'manual':'Aucun téléchargement : l’utilisateur rattache une installation existante.'};
+function clean(v){return String(v??'').trim()}function option(){return draft?.install?.[optionIndex]||{id:'install-1',label:'Installation',platform:{os:'windows'},kind:'external',runner:'native'}}
+function set(id,v){$(id).value=v??''}function selectedGame(){return games.find(g=>g.id===$('#game').value)}
+function updateGithubLinks(){const id=clean($('#id').value)||'nouveau-jeu';$('#editGithub').href=`https://github.com/burgerslayer7/burgerslayer7.github.io/edit/main/_data/pokefan_games/${encodeURIComponent(id)}.json`;$('#newGithub').href=`https://github.com/burgerslayer7/burgerslayer7.github.io/new/main?filename=${encodeURIComponent('_data/pokefan_games/'+id+'.json')}`}
+function kindUi(){const k=$('#kind').value;$('#kindHint').textContent=hints[k]||'';document.querySelectorAll('.github').forEach(x=>x.style.display=k==='github-release'?'grid':'none');document.querySelectorAll('.direct').forEach(x=>x.style.display=k==='direct-zip'?'grid':'none')}
+function fillOption(){const o=option();set('#label',o.label);set('#url',o.url);set('#repository',o.repository);set('#assetPattern',o.assetPattern);set('#executable',o.executable);set('#sha256',o.sha256);set('#optionSource',o.sourcePage);set('#os',o.platform?.os||'windows');set('#kind',o.kind||'external');set('#runner',o.runner||'native');kindUi()}
+function fillGame(g){draft=structuredClone(g);set('#id',g.id);set('#name',g.name);set('#version',g.version);set('#category',g.category);set('#developer',g.developer);set('#sourcePage',g.sourcePage);set('#description',g.description);optionIndex=0;renderOptions();fillOption();generate()}
+function renderOptions(){const sel=$('#installOption');sel.innerHTML='';(draft.install||[]).forEach((o,i)=>sel.add(new Option(`${o.label||o.id} · ${o.kind}`,String(i))));sel.value=String(optionIndex)}
+function applyForm(){const g=structuredClone(draft||{});g.manifestVersion=3;g.id=clean($('#id').value);g.name=clean($('#name').value);g.version=clean($('#version').value)||undefined;g.category=clean($('#category').value)||undefined;g.developer=clean($('#developer').value)||undefined;g.sourcePage=clean($('#sourcePage').value)||undefined;g.description=clean($('#description').value);g.languages=g.languages||['English'];g.tags=g.tags||[];g.status=g.status||'released';g.install=g.install||[];const old=g.install[optionIndex]||{};const k=$('#kind').value;const o={...old,id:old.id||`install-${optionIndex+1}`,label:clean($('#label').value)||'Installation',platform:{...(old.platform||{}),os:$('#os').value},kind:k,runner:$('#runner').value};['url','repository','assetPattern','executable','sha256'].forEach(key=>{const v=clean($('#'+key).value);if(v)o[key]=v;else delete o[key]});const sp=clean($('#optionSource').value);if(sp)o.sourcePage=sp;else delete o.sourcePage;if(k!=='direct-zip'){delete o.url;delete o.sha256}if(k!=='github-release'){delete o.repository;delete o.assetPattern}g.install[optionIndex]=o;draft=g;return g}
+function generate(){const g=applyForm();$('#output').textContent=JSON.stringify(g,null,2);updateGithubLinks();$('#status').textContent=`Fiche prête : ${g.id}.json`;return g}
+$('#game').addEventListener('change',()=>{const g=selectedGame();if(g)fillGame(g)});$('#installOption').addEventListener('change',e=>{optionIndex=Number(e.target.value)||0;fillOption()});$('#kind').addEventListener('change',kindUi);$('#id').addEventListener('input',updateGithubLinks);$('#generate').onclick=generate;$('#copy').onclick=async()=>{await navigator.clipboard.writeText(JSON.stringify(generate(),null,2));$('#status').textContent='JSON copié dans le presse-papiers.'};$('#download').onclick=()=>{const g=generate(),a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(g,null,2)+'\n'],{type:'application/json'}));a.download=`${g.id}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)};$('#addOption').onclick=()=>{applyForm();draft.install.push({id:`install-${draft.install.length+1}`,label:'Nouvelle option',platform:{os:'windows'},kind:'external',runner:'native'});optionIndex=draft.install.length-1;renderOptions();fillOption()};
+fetch('games.json',{cache:'no-store'}).then(r=>r.json()).then(data=>{games=Array.isArray(data)?data:[];$('#game').innerHTML='';games.forEach(g=>$('#game').add(new Option(g.name,g.id)));const wanted=new URLSearchParams(location.search).get('id');if(wanted&&games.some(g=>g.id===wanted))$('#game').value=wanted;fillGame(selectedGame()||games[0])}).catch(e=>{$('#output').textContent='Impossible de charger games.json : '+e.message});
+</script></body></html>
